@@ -1,9 +1,15 @@
-// ===============================
-// CAFE PARVAZ - SCRIPT
-// ===============================
+// =====================================================
+// CAFE PARVAZ — SCRIPT
+// =====================================================
 
-// محصولات فعلی کافه
-const products = [
+const ADMIN_PASSWORD = "4030";
+
+
+// =====================================================
+// DEFAULT PRODUCTS
+// =====================================================
+
+const defaultProducts = [
     {
         id: 1,
         name: "اسپرسو",
@@ -43,18 +49,30 @@ const products = [
 ];
 
 
-// ===============================
-// VARIABLES
-// ===============================
+// =====================================================
+// LOCAL STORAGE
+// =====================================================
+
+let products =
+    JSON.parse(
+        localStorage.getItem("cafeParvazProducts")
+    ) || defaultProducts;
+
+
+let orders =
+    JSON.parse(
+        localStorage.getItem("cafeParvazOrders")
+    ) || [];
+
 
 let cart = [];
 
 let currentCategory = "all";
 
 
-// ===============================
+// =====================================================
 // ELEMENTS
-// ===============================
+// =====================================================
 
 const productsContainer =
     document.getElementById("products");
@@ -74,6 +92,9 @@ const cartCount =
 const floatingCart =
     document.getElementById("floatingCart");
 
+const cartTotal =
+    document.getElementById("cartTotal");
+
 const cartModal =
     document.getElementById("cartModal");
 
@@ -83,10 +104,86 @@ const cartItems =
 const checkoutModal =
     document.getElementById("checkoutModal");
 
+const adminButton =
+    document.getElementById("adminButton");
 
-// ===============================
-// SHOW PRODUCTS
-// ===============================
+const adminLoginModal =
+    document.getElementById("adminLoginModal");
+
+const adminPassword =
+    document.getElementById("adminPassword");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const loginError =
+    document.getElementById("loginError");
+
+const adminPanel =
+    document.getElementById("adminPanel");
+
+const adminProductList =
+    document.getElementById("adminProductList");
+
+const adminOrderList =
+    document.getElementById("adminOrderList");
+
+const adminOrderCount =
+    document.getElementById("adminOrderCount");
+
+
+// =====================================================
+// SAVE DATA
+// =====================================================
+
+function saveProducts() {
+
+    localStorage.setItem(
+        "cafeParvazProducts",
+        JSON.stringify(products)
+    );
+
+}
+
+
+function saveOrders() {
+
+    localStorage.setItem(
+        "cafeParvazOrders",
+        JSON.stringify(orders)
+    );
+
+}
+
+
+// =====================================================
+// CATEGORY NAME
+// =====================================================
+
+function getCategoryName(category) {
+
+    const names = {
+
+        hot: "نوشیدنی گرم",
+
+        cold: "نوشیدنی سرد",
+
+        snacks: "تنقلات",
+
+        breakfast: "صبحانه",
+
+        other: "سایر"
+
+    };
+
+    return names[category] || "سایر";
+
+}
+
+
+// =====================================================
+// RENDER PRODUCTS
+// =====================================================
 
 function renderProducts() {
 
@@ -154,11 +251,11 @@ function renderProducts() {
                 <div class="product-info">
 
                     <h3>
-                        ${product.name}
+                        ${escapeHTML(product.name)}
                     </h3>
 
                     <p>
-                        ${product.description}
+                        ${escapeHTML(product.description || "")}
                     </p>
 
                     <div class="product-bottom">
@@ -166,7 +263,7 @@ function renderProducts() {
                         <button
                             class="add-button"
                             onclick="addToCart(${product.id})"
-                            aria-label="افزودن ${product.name}"
+                            aria-label="افزودن محصول"
                         >
                             +
                         </button>
@@ -186,9 +283,25 @@ function renderProducts() {
 }
 
 
-// ===============================
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+// =====================================================
 // ADD TO CART
-// ===============================
+// =====================================================
 
 function addToCart(productId) {
 
@@ -215,7 +328,9 @@ function addToCart(productId) {
 
         cart.push({
 
-            ...product,
+            id: product.id,
+
+            name: product.name,
 
             quantity: 1
 
@@ -229,26 +344,9 @@ function addToCart(productId) {
 }
 
 
-// ===============================
-// REMOVE FROM CART
-// ===============================
-
-function removeFromCart(productId) {
-
-    cart =
-        cart.filter(
-            item => item.id !== productId
-        );
-
-
-    updateCart();
-
-}
-
-
-// ===============================
+// =====================================================
 // CHANGE QUANTITY
-// ===============================
+// =====================================================
 
 function changeQuantity(
     productId,
@@ -257,7 +355,8 @@ function changeQuantity(
 
     const item =
         cart.find(
-            product => product.id === productId
+            product =>
+                product.id === productId
         );
 
 
@@ -269,9 +368,11 @@ function changeQuantity(
 
     if (item.quantity <= 0) {
 
-        removeFromCart(productId);
-
-        return;
+        cart =
+            cart.filter(
+                product =>
+                    product.id !== productId
+            );
 
     }
 
@@ -281,9 +382,9 @@ function changeQuantity(
 }
 
 
-// ===============================
+// =====================================================
 // UPDATE CART
-// ===============================
+// =====================================================
 
 function updateCart() {
 
@@ -299,8 +400,12 @@ function updateCart() {
         totalQuantity.toLocaleString("fa-IR");
 
 
+    cartTotal.textContent =
+        `${totalQuantity.toLocaleString("fa-IR")} محصول`;
+
+
     floatingCart.hidden =
-        cart.length === 0;
+        totalQuantity === 0;
 
 
     renderCart();
@@ -308,9 +413,9 @@ function updateCart() {
 }
 
 
-// ===============================
+// =====================================================
 // RENDER CART
-// ===============================
+// =====================================================
 
 function renderCart() {
 
@@ -357,7 +462,7 @@ function renderCart() {
             <div class="cart-item-info">
 
                 <h4>
-                    ${item.name}
+                    ${escapeHTML(item.name)}
                 </h4>
 
             </div>
@@ -399,9 +504,9 @@ function renderCart() {
 }
 
 
-// ===============================
-// CATEGORY BUTTONS
-// ===============================
+// =====================================================
+// CATEGORY
+// =====================================================
 
 categories.forEach(button => {
 
@@ -430,9 +535,9 @@ categories.forEach(button => {
 });
 
 
-// ===============================
+// =====================================================
 // SEARCH
-// ===============================
+// =====================================================
 
 searchInput.addEventListener(
     "input",
@@ -440,9 +545,9 @@ searchInput.addEventListener(
 );
 
 
-// ===============================
-// OPEN CART
-// ===============================
+// =====================================================
+// CART OPEN
+// =====================================================
 
 document
     .getElementById("cartButton")
@@ -468,9 +573,9 @@ document
     );
 
 
-// ===============================
-// CLOSE CART
-// ===============================
+// =====================================================
+// CART CLOSE
+// =====================================================
 
 document
     .getElementById("closeCart")
@@ -496,9 +601,9 @@ document
     );
 
 
-// ===============================
+// =====================================================
 // CHECKOUT
-// ===============================
+// =====================================================
 
 document
     .getElementById("checkoutButton")
@@ -525,9 +630,9 @@ document
     );
 
 
-// ===============================
+// =====================================================
 // CLOSE CHECKOUT
-// ===============================
+// =====================================================
 
 document
     .getElementById("checkoutOverlay")
@@ -541,9 +646,9 @@ document
     );
 
 
-// ===============================
+// =====================================================
 // SUBMIT ORDER
-// ===============================
+// =====================================================
 
 document
     .getElementById("orderForm")
@@ -578,7 +683,8 @@ document
                     .getElementById(
                         "customerName"
                     )
-                    .value;
+                    .value
+                    .trim();
 
 
             const customerNote =
@@ -586,44 +692,50 @@ document
                     .getElementById(
                         "customerNote"
                     )
-                    .value;
+                    .value
+                    .trim();
 
 
             const order = {
 
                 id: Date.now(),
 
-                table: tableNumber,
+                table:
+                    tableNumber,
 
-                customer: customerName,
+                customer:
+                    customerName,
 
-                note: customerNote,
+                note:
+                    customerNote,
 
-                items: cart.map(item => ({
+                items:
+                    cart.map(item => ({
 
-                    name: item.name,
+                        name:
+                            item.name,
 
-                    quantity: item.quantity
+                        quantity:
+                            item.quantity
 
-                })),
+                    })),
+
+                status:
+                    "new",
 
                 createdAt:
                     new Date()
-                        .toLocaleString("fa-IR")
+                        .toLocaleString(
+                            "fa-IR"
+                        )
 
             };
 
 
-            // فعلاً فقط برای تست
-            console.log(
-                "CAFE PARVAZ ORDER:",
-                order
-            );
+            orders.unshift(order);
 
 
-            alert(
-                "سفارش شما ثبت شد ✅"
-            );
+            saveOrders();
 
 
             cart = [];
@@ -637,14 +749,807 @@ document
 
             event.target.reset();
 
+
+            updateAdminOrderCount();
+
+
+            alert(
+                "سفارش با موفقیت ثبت شد ✅"
+            );
+
         }
     );
 
 
-// ===============================
+// =====================================================
+// ADMIN LOGIN
+// =====================================================
+
+adminButton.addEventListener(
+    "click",
+    () => {
+
+        adminPassword.value = "";
+
+        loginError.hidden = true;
+
+        adminLoginModal.hidden = false;
+
+        setTimeout(
+            () => adminPassword.focus(),
+            100
+        );
+
+    }
+);
+
+
+// =====================================================
+// LOGIN
+// =====================================================
+
+function loginAdmin() {
+
+    if (
+        adminPassword.value ===
+        ADMIN_PASSWORD
+    ) {
+
+        adminLoginModal.hidden = true;
+
+        adminPanel.hidden = false;
+
+        renderAdminProducts();
+
+        renderAdminOrders();
+
+        updateAdminOrderCount();
+
+    } else {
+
+        loginError.hidden = false;
+
+        adminPassword.value = "";
+
+        adminPassword.focus();
+
+    }
+
+}
+
+
+loginButton.addEventListener(
+    "click",
+    loginAdmin
+);
+
+
+adminPassword.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+
+            loginAdmin();
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// CLOSE LOGIN
+// =====================================================
+
+document
+    .getElementById("closeAdminLogin")
+    .addEventListener(
+        "click",
+        () => {
+
+            adminLoginModal.hidden = true;
+
+        }
+    );
+
+
+document
+    .getElementById("adminLoginOverlay")
+    .addEventListener(
+        "click",
+        () => {
+
+            adminLoginModal.hidden = true;
+
+        }
+    );
+
+
+// =====================================================
+// CLOSE ADMIN PANEL
+// =====================================================
+
+document
+    .getElementById("closeAdminPanel")
+    .addEventListener(
+        "click",
+        () => {
+
+            adminPanel.hidden = true;
+
+        }
+    );
+
+
+// =====================================================
+// ADMIN TABS
+// =====================================================
+
+document
+    .querySelectorAll(".admin-tab")
+    .forEach(tab => {
+
+        tab.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(".admin-tab")
+                    .forEach(
+                        item =>
+                            item.classList.remove(
+                                "active"
+                            )
+                    );
+
+
+                tab.classList.add("active");
+
+
+                const selected =
+                    tab.dataset.adminTab;
+
+
+                document
+                    .getElementById(
+                        "adminProducts"
+                    )
+                    .hidden =
+                    selected !== "products";
+
+
+                document
+                    .getElementById(
+                        "adminOrders"
+                    )
+                    .hidden =
+                    selected !== "orders";
+
+            }
+        );
+
+    });
+
+
+// =====================================================
+// ADMIN PRODUCTS
+// =====================================================
+
+function renderAdminProducts() {
+
+    adminProductList.innerHTML = "";
+
+
+    if (products.length === 0) {
+
+        adminProductList.innerHTML = `
+
+            <div class="empty-state">
+
+                <div>📦</div>
+
+                <h3>
+                    محصولی وجود ندارد
+                </h3>
+
+                <p>
+                    یک محصول جدید اضافه کنید.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    products.forEach(product => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "admin-product-card";
+
+
+        card.innerHTML = `
+
+            <h4>
+                ${escapeHTML(product.name)}
+            </h4>
+
+            <p>
+                ${escapeHTML(product.description || "")}
+            </p>
+
+            <span class="admin-product-category">
+                ${getCategoryName(product.category)}
+            </span>
+
+            <div class="admin-product-actions">
+
+                <button
+                    class="edit-product"
+                    onclick="editProduct(${product.id})"
+                >
+                    ✏️ ویرایش
+                </button>
+
+                <button
+                    class="delete-product"
+                    onclick="deleteProduct(${product.id})"
+                >
+                    🗑️ حذف
+                </button>
+
+            </div>
+
+        `;
+
+
+        adminProductList.appendChild(card);
+
+    });
+
+}
+
+
+// =====================================================
+// ADD PRODUCT
+// =====================================================
+
+document
+    .getElementById("addProductButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById(
+                    "productModalTitle"
+                )
+                .textContent =
+                "محصول جدید";
+
+
+            document
+                .getElementById(
+                    "editProductId"
+                )
+                .value = "";
+
+
+            document
+                .getElementById(
+                    "productForm"
+                )
+                .reset();
+
+
+            document
+                .getElementById(
+                    "productModal"
+                )
+                .hidden = false;
+
+        }
+    );
+
+
+// =====================================================
+// SAVE PRODUCT
+// =====================================================
+
+document
+    .getElementById("productForm")
+    .addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+
+            const id =
+                document
+                    .getElementById(
+                        "editProductId"
+                    )
+                    .value;
+
+
+            const name =
+                document
+                    .getElementById(
+                        "productName"
+                    )
+                    .value
+                    .trim();
+
+
+            const description =
+                document
+                    .getElementById(
+                        "productDescription"
+                    )
+                    .value
+                    .trim();
+
+
+            const category =
+                document
+                    .getElementById(
+                        "productCategory"
+                    )
+                    .value;
+
+
+            if (id) {
+
+                const product =
+                    products.find(
+                        item =>
+                            item.id ===
+                            Number(id)
+                    );
+
+
+                if (product) {
+
+                    product.name =
+                        name;
+
+                    product.description =
+                        description;
+
+                    product.category =
+                        category;
+
+                }
+
+            } else {
+
+                products.push({
+
+                    id:
+                        Date.now(),
+
+                    name,
+
+                    description,
+
+                    category
+
+                });
+
+            }
+
+
+            saveProducts();
+
+
+            renderProducts();
+
+            renderAdminProducts();
+
+
+            document
+                .getElementById(
+                    "productModal"
+                )
+                .hidden = true;
+
+
+            event.target.reset();
+
+
+            alert(
+                "محصول با موفقیت ذخیره شد ✅"
+            );
+
+        }
+    );
+
+
+// =====================================================
+// EDIT PRODUCT
+// =====================================================
+
+function editProduct(productId) {
+
+    const product =
+        products.find(
+            item =>
+                item.id === productId
+        );
+
+
+    if (!product) return;
+
+
+    document
+        .getElementById(
+            "productModalTitle"
+        )
+        .textContent =
+        "ویرایش محصول";
+
+
+    document
+        .getElementById(
+            "editProductId"
+        )
+        .value =
+        product.id;
+
+
+    document
+        .getElementById(
+            "productName"
+        )
+        .value =
+        product.name;
+
+
+    document
+        .getElementById(
+            "productDescription"
+        )
+        .value =
+        product.description || "";
+
+
+    document
+        .getElementById(
+            "productCategory"
+        )
+        .value =
+        product.category;
+
+
+    document
+        .getElementById(
+            "productModal"
+        )
+        .hidden = false;
+
+}
+
+
+// =====================================================
+// DELETE PRODUCT
+// =====================================================
+
+function deleteProduct(productId) {
+
+    const product =
+        products.find(
+            item =>
+                item.id === productId
+        );
+
+
+    if (!product) return;
+
+
+    const confirmed =
+        confirm(
+            `آیا محصول «${product.name}» حذف شود؟`
+        );
+
+
+    if (!confirmed) return;
+
+
+    products =
+        products.filter(
+            item =>
+                item.id !== productId
+        );
+
+
+    saveProducts();
+
+
+    renderProducts();
+
+    renderAdminProducts();
+
+}
+
+
+// =====================================================
+// CLOSE PRODUCT MODAL
+// =====================================================
+
+document
+    .getElementById("cancelProduct")
+    .addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById(
+                    "productModal"
+                )
+                .hidden = true;
+
+        }
+    );
+
+
+document
+    .getElementById("productModalOverlay")
+    .addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById(
+                    "productModal"
+                )
+                .hidden = true;
+
+        }
+    );
+
+
+// =====================================================
+// ADMIN ORDERS
+// =====================================================
+
+function renderAdminOrders() {
+
+    adminOrderList.innerHTML = "";
+
+
+    if (orders.length === 0) {
+
+        adminOrderList.innerHTML = `
+
+            <div class="empty-state">
+
+                <div>📋</div>
+
+                <h3>
+                    هنوز سفارشی ثبت نشده
+                </h3>
+
+                <p>
+                    سفارش‌های جدید اینجا نمایش داده می‌شوند.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    orders.forEach(order => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "admin-order-card";
+
+
+        const itemsHTML =
+            order.items
+                .map(item => `
+
+                    <div class="admin-order-item">
+
+                        <span>
+                            ${escapeHTML(item.name)}
+                        </span>
+
+                        <strong>
+                            × ${item.quantity.toLocaleString("fa-IR")}
+                        </strong>
+
+                    </div>
+
+                `)
+                .join("");
+
+
+        card.innerHTML = `
+
+            <div class="admin-order-header">
+
+                <h4>
+                    سفارش #${String(order.id).slice(-4)}
+                </h4>
+
+                <span class="admin-order-time">
+                    ${escapeHTML(order.createdAt)}
+                </span>
+
+            </div>
+
+
+            <div class="admin-order-info">
+
+                <div class="order-info-box">
+
+                    <span>
+                        میز
+                    </span>
+
+                    <strong>
+                        ${escapeHTML(order.table)}
+                    </strong>
+
+                </div>
+
+
+                <div class="order-info-box">
+
+                    <span>
+                        مشتری
+                    </span>
+
+                    <strong>
+                        ${escapeHTML(order.customer)}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-order-items">
+
+                ${itemsHTML}
+
+            </div>
+
+
+            ${
+                order.note
+                    ? `
+                        <div class="admin-order-note">
+
+                            📝
+                            ${escapeHTML(order.note)}
+
+                        </div>
+                    `
+                    : ""
+            }
+
+
+            <select
+                class="order-status"
+                onchange="changeOrderStatus(
+                    ${order.id},
+                    this.value
+                )"
+            >
+
+                <option
+                    value="new"
+                    ${order.status === "new" ? "selected" : ""}
+                >
+                    🆕 سفارش جدید
+                </option>
+
+                <option
+                    value="preparing"
+                    ${order.status === "preparing" ? "selected" : ""}
+                >
+                    👨‍🍳 در حال آماده‌سازی
+                </option>
+
+                <option
+                    value="ready"
+                    ${order.status === "ready" ? "selected" : ""}
+                >
+                    ✅ آماده تحویل
+                </option>
+
+                <option
+                    value="done"
+                    ${order.status === "done" ? "selected" : ""}
+                >
+                    📦 تحویل داده شد
+                </option>
+
+            </select>
+
+        `;
+
+
+        adminOrderList.appendChild(card);
+
+    });
+
+}
+
+
+// =====================================================
+// CHANGE ORDER STATUS
+// =====================================================
+
+function changeOrderStatus(
+    orderId,
+    status
+) {
+
+    const order =
+        orders.find(
+            item =>
+                item.id === orderId
+        );
+
+
+    if (!order) return;
+
+
+    order.status = status;
+
+
+    saveOrders();
+
+
+    updateAdminOrderCount();
+
+}
+
+
+// =====================================================
+// ORDER COUNT
+// =====================================================
+
+function updateAdminOrderCount() {
+
+    const newOrders =
+        orders.filter(
+            order =>
+                order.status === "new"
+        ).length;
+
+
+    adminOrderCount.textContent =
+        newOrders.toLocaleString("fa-IR");
+
+}
+
+
+// =====================================================
 // INITIAL LOAD
-// ===============================
+// =====================================================
 
 renderProducts();
 
 updateCart();
+
+updateAdminOrderCount();
