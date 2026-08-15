@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>کافه پرواز | Cafe Parvaz</title>
+
+    <meta
+        name="description"
+        content="منوی دیجیتال کافه پرواز"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ✈️
+            </div>
+
+            <div class="brand-info">
+                <h1>کافه پرواز</h1>
+                <span>CAFE PARVAZ</span>
+            </div>
+
+        </div>
+
+        <button class="cart-button" id="cartButton">
+            <span>🛒</span>
+            <b id="cartCount">0</b>
+        </button>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <span class="hero-small">
+                    WELCOME TO
+                </span>
+
+                <h2>
+                    کافه پرواز
+                </h2>
+
+                <p>
+                    طعم خوب، یک پرواز متفاوت
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <section class="search-section">
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="چی میل داری؟"
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CATEGORIES ================= -->
+
+        <nav class="categories" id="categories">
+
+            <button class="category active" data-category="all">
+                همه
+            </button>
+
+            <button class="category" data-category="hot">
+                نوشیدنی گرم
+            </button>
+
+            <button class="category" data-category="cold">
+                نوشیدنی سرد
+            </button>
+
+            <button class="category" data-category="snacks">
+                تنقلات
+            </button>
+
+            <button class="category" data-category="breakfast">
+                صبحانه
+            </button>
+
+            <button class="category" data-category="other">
+                سایر
+            </button>
+
+        </nav>
+
+
+        <!-- ================= PRODUCTS ================= -->
+
+        <section class="menu-section">
+
+            <div class="section-title">
+
+                <div>
+                    <span>MENU</span>
+                    <h2>منوی کافه</h2>
+                </div>
+
+            </div>
+
+
+            <div
+                class="products"
+                id="products"
+            >
+
+                <!-- محصولات توسط JavaScript اینجا قرار می‌گیرند -->
+
+            </div>
+
+
+            <div
+                class="empty-state"
+                id="emptyState"
+                hidden
+            >
+
+                <div>☕</div>
+
+                <h3>
+                    چیزی پیدا نشد
+                </h3>
+
+                <p>
+                    محصول دیگری را امتحان کن.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FLOATING CART ================= -->
+
+    <div
+        class="floating-cart"
+        id="floatingCart"
+        hidden
+    >
+
+        <div class="floating-cart-info">
+
+            <span>
+                سبد خرید
+            </span>
+
+            <strong id="cartTotal">
+                ۰ تومان
+            </strong>
+
+        </div>
+
+        <button id="openCart">
+            مشاهده سفارش
+            <span>←</span>
+        </button>
+
+    </div>
+
+
+    <!-- ================= CART MODAL ================= -->
+
+    <div
+        class="modal"
+        id="cartModal"
+        hidden
+    >
+
+        <div class="modal-overlay" id="modalOverlay"></div>
+
+        <div class="cart-panel">
+
+            <div class="cart-header">
+
+                <div>
+                    <span>YOUR ORDER</span>
+                    <h2>سفارش شما</h2>
+                </div>
+
+                <button
+                    class="close-button"
+                    id="closeCart"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                class="cart-items"
+                id="cartItems"
+            >
+
+                <!-- آیتم‌های سفارش اینجا قرار می‌گیرند -->
+
+            </div>
+
+
+            <div class="cart-footer">
+
+                <div class="total-row">
+
+                    <span>
+                        مبلغ نهایی
+                    </span>
+
+                    <strong id="modalTotal">
+                        ۰ تومان
+                    </strong>
+
+                </div>
+
+                <button
+                    class="checkout-button"
+                    id="checkoutButton"
+                >
+                    ادامه و ثبت سفارش
+                    <span>←</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CHECKOUT MODAL ================= -->
+
+    <div
+        class="modal"
+        id="checkoutModal"
+        hidden
+    >
+
+        <div
+            class="modal-overlay"
+            id="checkoutOverlay"
+        ></div>
+
+        <div class="checkout-panel">
+
+            <div class="checkout-header">
+
+                <span>CHECKOUT</span>
+
+                <h2>
+                    اطلاعات سفارش
+                </h2>
+
+                <p>
+                    برای ارسال سفارش، اطلاعات زیر را وارد کنید.
+                </p>
+
+            </div>
+
+
+            <form id="orderForm">
+
+                <label for="tableNumber">
+                    شماره میز
+                </label>
+
+                <input
+                    type="number"
+                    id="tableNumber"
+                    name="tableNumber"
+                    min="1"
+                    placeholder="مثلاً ۱۲"
+                    required
+                >
+
+
+                <label for="customerName">
+                    نام
+                </label>
+
+                <input
+                    type="text"
+                    id="customerName"
+                    name="customerName"
+                    placeholder="نام شما"
+                    required
+                >
+
+
+                <label for="customerNote">
+                    توضیحات سفارش
+                </label>
+
+                <textarea
+                    id="customerNote"
+                    name="customerNote"
+                    rows="3"
+                    placeholder="مثلاً بدون شکر..."
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    class="submit-order"
+                >
+                    ثبت سفارش
+                    <span>✓</span>
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-logo">
+            ✈️
+        </div>
+
+        <h3>
+            کافه پرواز
+        </h3>
+
+        <p>
+            شرکت هوانوردی عقاب آسمان شمال
+        </p>
+
+        <span>
+            © 2026 CAFE PARVAZ
+        </span>
+
+    </footer>
+
+
+    <!-- ================= SCRIPT ================= -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
