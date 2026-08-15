@@ -1553,3 +1553,8 @@ renderProducts();
 updateCart();
 
 updateAdminOrderCount();
+window.addToCart = addToCart;
+window.changeQuantity = changeQuantity;
+window.editProduct = editProduct;
+window.deleteProduct = deleteProduct;
+window.changeOrderStatus = changeOrderStatus;
