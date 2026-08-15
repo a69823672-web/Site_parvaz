@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,17 +34,43 @@
 
         </div>
 
-        <button class="cart-button" id="cartButton">
-            <span>🛒</span>
-            <b id="cartCount">0</b>
-        </button>
+
+        <div class="header-actions">
+
+            <!-- مدیریت -->
+            <button
+                class="admin-button"
+                id="adminButton"
+                title="پنل مدیریت"
+            >
+                ⚙️
+            </button>
+
+
+            <!-- سبد سفارش -->
+            <button
+                class="cart-button"
+                id="cartButton"
+                title="سبد سفارش"
+            >
+                🛒
+
+                <b id="cartCount">
+                    ۰
+                </b>
+
+            </button>
+
+        </div>
 
     </header>
 
 
-    <!-- ================= HERO ================= -->
+    <!-- ================= CUSTOMER PAGE ================= -->
 
-    <main>
+    <main id="customerPage">
+
+        <!-- HERO -->
 
         <section class="hero">
 
@@ -66,13 +93,15 @@
         </section>
 
 
-        <!-- ================= SEARCH ================= -->
+        <!-- SEARCH -->
 
         <section class="search-section">
 
             <div class="search-box">
 
-                <span>⌕</span>
+                <span>
+                    ⌕
+                </span>
 
                 <input
                     type="search"
@@ -86,47 +115,71 @@
         </section>
 
 
-        <!-- ================= CATEGORIES ================= -->
+        <!-- CATEGORIES -->
 
-        <nav class="categories" id="categories">
+        <nav
+            class="categories"
+            id="categories"
+        >
 
-            <button class="category active" data-category="all">
+            <button
+                class="category active"
+                data-category="all"
+            >
                 همه
             </button>
 
-            <button class="category" data-category="hot">
+            <button
+                class="category"
+                data-category="hot"
+            >
                 نوشیدنی گرم
             </button>
 
-            <button class="category" data-category="cold">
+            <button
+                class="category"
+                data-category="cold"
+            >
                 نوشیدنی سرد
             </button>
 
-            <button class="category" data-category="snacks">
+            <button
+                class="category"
+                data-category="snacks"
+            >
                 تنقلات
             </button>
 
-            <button class="category" data-category="breakfast">
+            <button
+                class="category"
+                data-category="breakfast"
+            >
                 صبحانه
             </button>
 
-            <button class="category" data-category="other">
+            <button
+                class="category"
+                data-category="other"
+            >
                 سایر
             </button>
 
         </nav>
 
 
-        <!-- ================= PRODUCTS ================= -->
+        <!-- PRODUCTS -->
 
         <section class="menu-section">
 
             <div class="section-title">
 
-                <div>
-                    <span>MENU</span>
-                    <h2>منوی کافه</h2>
-                </div>
+                <span>
+                    MENU
+                </span>
+
+                <h2>
+                    منوی کافه
+                </h2>
 
             </div>
 
@@ -135,9 +188,6 @@
                 class="products"
                 id="products"
             >
-
-                <!-- محصولات توسط JavaScript اینجا قرار می‌گیرند -->
-
             </div>
 
 
@@ -147,7 +197,9 @@
                 hidden
             >
 
-                <div>☕</div>
+                <div>
+                    ☕
+                </div>
 
                 <h3>
                     چیزی پیدا نشد
@@ -175,18 +227,19 @@
         <div class="floating-cart-info">
 
             <span>
-                سبد خرید
+                سبد سفارش
             </span>
 
             <strong id="cartTotal">
-                ۰ تومان
+                ۰ محصول
             </strong>
 
         </div>
 
+
         <button id="openCart">
             مشاهده سفارش
-            <span>←</span>
+            ←
         </button>
 
     </div>
@@ -200,16 +253,28 @@
         hidden
     >
 
-        <div class="modal-overlay" id="modalOverlay"></div>
+        <div
+            class="modal-overlay"
+            id="modalOverlay"
+        ></div>
+
 
         <div class="cart-panel">
 
             <div class="cart-header">
 
                 <div>
-                    <span>YOUR ORDER</span>
-                    <h2>سفارش شما</h2>
+
+                    <span>
+                        YOUR ORDER
+                    </span>
+
+                    <h2>
+                        سفارش شما
+                    </h2>
+
                 </div>
+
 
                 <button
                     class="close-button"
@@ -225,32 +290,17 @@
                 class="cart-items"
                 id="cartItems"
             >
-
-                <!-- آیتم‌های سفارش اینجا قرار می‌گیرند -->
-
             </div>
 
 
             <div class="cart-footer">
-
-                <div class="total-row">
-
-                    <span>
-                        مبلغ نهایی
-                    </span>
-
-                    <strong id="modalTotal">
-                        ۰ تومان
-                    </strong>
-
-                </div>
 
                 <button
                     class="checkout-button"
                     id="checkoutButton"
                 >
                     ادامه و ثبت سفارش
-                    <span>←</span>
+                    ←
                 </button>
 
             </div>
@@ -260,7 +310,7 @@
     </div>
 
 
-    <!-- ================= CHECKOUT MODAL ================= -->
+    <!-- ================= CHECKOUT ================= -->
 
     <div
         class="modal"
@@ -273,18 +323,21 @@
             id="checkoutOverlay"
         ></div>
 
+
         <div class="checkout-panel">
 
             <div class="checkout-header">
 
-                <span>CHECKOUT</span>
+                <span>
+                    CHECKOUT
+                </span>
 
                 <h2>
                     اطلاعات سفارش
                 </h2>
 
                 <p>
-                    برای ارسال سفارش، اطلاعات زیر را وارد کنید.
+                    اطلاعات سفارش را وارد کنید.
                 </p>
 
             </div>
@@ -299,9 +352,8 @@
                 <input
                     type="number"
                     id="tableNumber"
-                    name="tableNumber"
                     min="1"
-                    placeholder="مثلاً ۱۲"
+                    placeholder="مثلاً ۴"
                     required
                 >
 
@@ -313,19 +365,17 @@
                 <input
                     type="text"
                     id="customerName"
-                    name="customerName"
                     placeholder="نام شما"
                     required
                 >
 
 
                 <label for="customerNote">
-                    توضیحات سفارش
+                    توضیحات
                 </label>
 
                 <textarea
                     id="customerNote"
-                    name="customerNote"
                     rows="3"
                     placeholder="مثلاً بدون شکر..."
                 ></textarea>
@@ -335,8 +385,331 @@
                     type="submit"
                     class="submit-order"
                 >
-                    ثبت سفارش
-                    <span>✓</span>
+                    ثبت سفارش ✓
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ADMIN LOGIN ================= -->
+
+    <div
+        class="modal"
+        id="adminLoginModal"
+        hidden
+    >
+
+        <div
+            class="modal-overlay"
+            id="adminLoginOverlay"
+        ></div>
+
+
+        <div class="admin-login-panel">
+
+            <div class="admin-icon">
+                🔐
+            </div>
+
+
+            <span>
+                ADMIN PANEL
+            </span>
+
+
+            <h2>
+                ورود مدیریت
+            </h2>
+
+
+            <p>
+                رمز مدیریت را وارد کنید.
+            </p>
+
+
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="رمز عبور"
+                inputmode="numeric"
+            >
+
+
+            <p
+                id="loginError"
+                class="login-error"
+                hidden
+            >
+                رمز عبور اشتباه است.
+            </p>
+
+
+            <button
+                id="loginButton"
+                class="admin-login-button"
+            >
+                ورود به پنل
+            </button>
+
+
+            <button
+                id="closeAdminLogin"
+                class="cancel-button"
+            >
+                انصراف
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ADMIN PANEL ================= -->
+
+    <div
+        id="adminPanel"
+        class="admin-panel"
+        hidden
+    >
+
+        <div class="admin-topbar">
+
+            <div>
+
+                <span>
+                    CAFE PARVAZ
+                </span>
+
+                <h2>
+                    پنل مدیریت
+                </h2>
+
+            </div>
+
+
+            <button
+                id="closeAdminPanel"
+                class="close-button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- ADMIN NAVIGATION -->
+
+        <div class="admin-tabs">
+
+            <button
+                class="admin-tab active"
+                data-admin-tab="products"
+            >
+                محصولات
+            </button>
+
+            <button
+                class="admin-tab"
+                data-admin-tab="orders"
+            >
+                سفارش‌ها
+
+                <b id="adminOrderCount">
+                    ۰
+                </b>
+
+            </button>
+
+        </div>
+
+
+        <!-- ================= PRODUCTS MANAGEMENT ================= -->
+
+        <section
+            id="adminProducts"
+            class="admin-section"
+        >
+
+            <div class="admin-section-title">
+
+                <div>
+
+                    <span>
+                        PRODUCTS
+                    </span>
+
+                    <h3>
+                        مدیریت محصولات
+                    </h3>
+
+                </div>
+
+
+                <button
+                    id="addProductButton"
+                    class="primary-admin-button"
+                >
+                    + محصول جدید
+                </button>
+
+            </div>
+
+
+            <div
+                id="adminProductList"
+                class="admin-product-list"
+            >
+            </div>
+
+        </section>
+
+
+        <!-- ================= ORDERS MANAGEMENT ================= -->
+
+        <section
+            id="adminOrders"
+            class="admin-section"
+            hidden
+        >
+
+            <div class="admin-section-title">
+
+                <div>
+
+                    <span>
+                        ORDERS
+                    </span>
+
+                    <h3>
+                        سفارش‌های مشتریان
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="adminOrderList"
+                class="admin-order-list"
+            >
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- ================= ADD / EDIT PRODUCT ================= -->
+
+    <div
+        class="modal"
+        id="productModal"
+        hidden
+    >
+
+        <div
+            class="modal-overlay"
+            id="productModalOverlay"
+        ></div>
+
+
+        <div class="product-form-panel">
+
+            <div class="checkout-header">
+
+                <span>
+                    PRODUCT
+                </span>
+
+                <h2 id="productModalTitle">
+                    محصول جدید
+                </h2>
+
+            </div>
+
+
+            <form id="productForm">
+
+                <input
+                    type="hidden"
+                    id="editProductId"
+                >
+
+
+                <label>
+                    نام محصول
+                </label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="مثلاً لاته"
+                    required
+                >
+
+
+                <label>
+                    توضیحات
+                </label>
+
+                <textarea
+                    id="productDescription"
+                    rows="3"
+                    placeholder="توضیح کوتاه محصول"
+                ></textarea>
+
+
+                <label>
+                    دسته‌بندی
+                </label>
+
+                <select
+                    id="productCategory"
+                    required
+                >
+
+                    <option value="hot">
+                        نوشیدنی گرم
+                    </option>
+
+                    <option value="cold">
+                        نوشیدنی سرد
+                    </option>
+
+                    <option value="snacks">
+                        تنقلات
+                    </option>
+
+                    <option value="breakfast">
+                        صبحانه
+                    </option>
+
+                    <option value="other">
+                        سایر
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="submit-order"
+                >
+                    ذخیره محصول
+                </button>
+
+
+                <button
+                    type="button"
+                    id="cancelProduct"
+                    class="cancel-button"
+                >
+                    انصراف
                 </button>
 
             </form>
@@ -374,4 +747,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>
