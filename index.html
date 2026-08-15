@@ -1,264 +1,129 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>کافه پرواز</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<header class="topbar">
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+    <div class="brand">
+        <div class="brand-icon">☕</div>
 
-<header class="header">
-
-    <div class="header-inner">
-
-        <div class="brand">
-
-            <h1>
-                کافه پرواز
-            </h1>
-
-            <span>
-                شرکت هوانوردی عقاب آسمان شمال
-            </span>
-
+        <div>
+            <h1>کافه پرواز</h1>
+            <p>شرکت هوانوردی عقاب آسمان شمال</p>
         </div>
-
-
-        <button
-            id="cartButton"
-            class="cart-button"
-            type="button"
-        >
-
-            🛒
-
-            <span id="cartCount">
-                ۰
-            </span>
-
-        </button>
-
     </div>
+
+    <button id="cartButton" class="cart-button">
+        🛒
+        <span id="cartCount">۰</span>
+    </button>
 
 </header>
 
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main>
 
+    <section class="hero">
+        <div>
+            <span class="hero-small">CAFE PARVAZ</span>
+            <h2>منوی کافه پرواز</h2>
+            <p>انتخاب کنید و سفارش خود را ثبت کنید.</p>
+        </div>
+    </section>
 
-    <!-- SEARCH -->
 
-    <section class="search-section">
+    <section class="search-box">
 
         <input
             id="searchInput"
             type="search"
-            placeholder="جستجوی محصول..."
+            placeholder="🔎 جستجوی محصول..."
         >
 
     </section>
 
 
-
-    <!-- =================================================
-         CATEGORIES
-    ================================================== -->
-
     <nav class="categories">
 
-        <button
-            class="category active"
-            data-category="all"
-            type="button"
-        >
+        <button class="category active" data-category="all">
             همه
         </button>
 
-
-        <button
-            class="category"
-            data-category="hot"
-            type="button"
-        >
-            نوشیدنی گرم
+        <button class="category" data-category="hot">
+            ☕ گرم
         </button>
 
-
-        <button
-            class="category"
-            data-category="cold"
-            type="button"
-        >
-            نوشیدنی سرد
+        <button class="category" data-category="cold">
+            🧊 سرد
         </button>
 
-
-        <button
-            class="category"
-            data-category="snacks"
-            type="button"
-        >
-            تنقلات
+        <button class="category" data-category="snacks">
+            🍿 تنقلات
         </button>
 
-
-        <button
-            class="category"
-            data-category="breakfast"
-            type="button"
-        >
-            صبحانه
+        <button class="category" data-category="breakfast">
+            🍳 صبحانه
         </button>
 
-
-        <button
-            class="category"
-            data-category="other"
-            type="button"
-        >
-            سایر
+        <button class="category" data-category="other">
+            ✦ سایر
         </button>
 
     </nav>
 
 
-
-    <!-- =================================================
-         PRODUCTS
-    ================================================== -->
-
-    <section
-        id="products"
-        class="products"
-    >
-    </section>
+    <section id="products" class="products"></section>
 
 
-    <section
-        id="emptyState"
-        class="empty-state"
-        hidden
-    >
+    <section id="emptyState" class="empty-state" hidden>
 
-        <div>
-            🔎
-        </div>
+        <div class="empty-icon">☕</div>
 
-        <h3>
-            محصولی پیدا نشد
-        </h3>
+        <h3>محصولی پیدا نشد</h3>
 
-        <p>
-            محصول دیگری را جستجو کنید.
-        </p>
+        <p>عبارت دیگری را امتحان کنید.</p>
 
     </section>
-
 
 </main>
 
 
-
-<!-- =====================================================
-     FLOATING CART
-===================================================== -->
-
 <button
     id="floatingCart"
     class="floating-cart"
-    type="button"
     hidden
 >
-
     🛒
-
-    <span id="cartTotal">
-        ۰ محصول
-    </span>
-
+    <span id="cartTotal">۰ محصول</span>
 </button>
 
 
+<!-- ================= CART ================= -->
 
-<!-- =====================================================
-     ADMIN BUTTON
-===================================================== -->
+<div id="cartModal" class="modal" hidden>
 
-<button
-    id="adminButton"
-    class="admin-button"
-    type="button"
->
-    ⚙️
-</button>
+    <div id="modalOverlay" class="overlay"></div>
 
+    <div class="modal-card">
 
+        <button id="closeCart" class="close-button">×</button>
 
-<!-- =====================================================
-     CART MODAL
-===================================================== -->
+        <h2>سبد سفارش</h2>
 
-<div
-    id="cartModal"
-    class="modal"
-    hidden
->
-
-    <div
-        id="modalOverlay"
-        class="modal-overlay"
-    ></div>
-
-
-    <div class="modal-box">
-
-        <button
-            id="closeCart"
-            class="modal-close"
-            type="button"
-        >
-            ×
-        </button>
-
-
-        <h2>
-            سبد سفارش
-        </h2>
-
-
-        <div
-            id="cartItems"
-            class="cart-items"
-        >
-        </div>
-
+        <div id="cartItems"></div>
 
         <button
             id="checkoutButton"
-            class="primary-button"
-            type="button"
+            class="main-button"
         >
             ادامه و ثبت سفارش
         </button>
@@ -268,73 +133,53 @@
 </div>
 
 
+<!-- ================= CHECKOUT ================= -->
 
-<!-- =====================================================
-     CHECKOUT MODAL
-===================================================== -->
+<div id="checkoutModal" class="modal" hidden>
 
-<div
-    id="checkoutModal"
-    class="modal"
-    hidden
->
+    <div id="checkoutOverlay" class="overlay"></div>
 
-    <div
-        id="checkoutOverlay"
-        class="modal-overlay"
-    ></div>
+    <div class="modal-card">
 
+        <button
+            class="close-button"
+            onclick="closeCheckout()"
+        >
+            ×
+        </button>
 
-    <div class="modal-box">
-
-        <h2>
-            ثبت سفارش
-        </h2>
-
+        <h2>ثبت سفارش</h2>
 
         <form id="orderForm">
 
-
-            <label>
-                شماره میز
-            </label>
+            <label>شماره میز</label>
 
             <input
                 id="tableNumber"
-                type="text"
-                placeholder="مثلاً ۵"
                 required
+                placeholder="مثلاً ۵"
             >
 
-
-            <label>
-                نام
-            </label>
+            <label>نام مشتری</label>
 
             <input
                 id="customerName"
-                type="text"
-                placeholder="نام شما"
+                placeholder="اختیاری"
             >
 
-
-            <label>
-                توضیحات
-            </label>
+            <label>توضیحات</label>
 
             <textarea
                 id="customerNote"
                 placeholder="مثلاً بدون شکر..."
             ></textarea>
 
-
             <button
+                class="main-button"
                 type="submit"
-                class="primary-button"
             >
-                ثبت سفارش
+                ثبت سفارش ✅
             </button>
-
 
         </form>
 
@@ -343,65 +188,44 @@
 </div>
 
 
+<!-- ================= ADMIN LOGIN ================= -->
 
-<!-- =====================================================
-     ADMIN LOGIN
-===================================================== -->
+<div id="adminLoginModal" class="modal" hidden>
 
-<div
-    id="adminLoginModal"
-    class="modal"
-    hidden
->
+    <div id="adminLoginOverlay" class="overlay"></div>
 
-    <div
-        id="adminLoginOverlay"
-        class="modal-overlay"
-    ></div>
-
-
-    <div class="modal-box admin-login-box">
+    <div class="modal-card admin-login">
 
         <button
             id="closeAdminLogin"
-            class="modal-close"
-            type="button"
+            class="close-button"
         >
             ×
         </button>
 
+        <div class="admin-lock">🔐</div>
 
-        <h2>
-            ورود به مدیریت
-        </h2>
+        <h2>مدیریت کافه</h2>
 
-
-        <p>
-            رمز مدیریت را وارد کنید
-        </p>
-
+        <p>رمز ورود را وارد کنید.</p>
 
         <input
             id="adminPassword"
             type="password"
-            placeholder="رمز عبور"
-            autocomplete="off"
+            placeholder="رمز مدیریت"
         >
-
 
         <p
             id="loginError"
-            class="login-error"
+            class="error"
             hidden
         >
-            رمز عبور اشتباه است
+            رمز اشتباه است.
         </p>
-
 
         <button
             id="loginButton"
-            class="primary-button"
-            type="button"
+            class="main-button"
         >
             ورود
         </button>
@@ -411,109 +235,66 @@
 </div>
 
 
+<!-- ================= ADMIN PANEL ================= -->
 
-<!-- =====================================================
-     ADMIN PANEL
-===================================================== -->
+<div id="adminPanel" class="admin-panel" hidden>
 
-<div
-    id="adminPanel"
-    class="admin-panel"
-    hidden
->
+    <div class="admin-window">
 
-    <div class="admin-container">
-
-
-        <!-- ADMIN HEADER -->
-
-        <div class="admin-header">
+        <header class="admin-header">
 
             <div>
-
-                <h2>
-                    پنل مدیریت کافه
-                </h2>
-
-                <p>
-                    مدیریت محصولات و سفارش‌ها
-                </p>
-
+                <span>CAFE PARVAZ</span>
+                <h2>پنل مدیریت</h2>
             </div>
-
 
             <button
                 id="closeAdminPanel"
-                class="modal-close"
-                type="button"
+                class="close-button"
             >
                 ×
             </button>
 
-        </div>
+        </header>
 
-
-
-        <!-- =================================================
-             ADMIN TABS
-        ================================================== -->
 
         <div class="admin-tabs">
 
             <button
                 class="admin-tab active"
                 data-admin-tab="products"
-                type="button"
             >
                 📦 محصولات
             </button>
 
-
             <button
                 class="admin-tab"
                 data-admin-tab="orders"
-                type="button"
             >
-                🛎️ سفارش‌ها
-
-                <span id="adminOrderCount">
-                    ۰
-                </span>
-
+                🔔 سفارش‌ها
+                <span id="adminOrderCount">۰</span>
             </button>
 
         </div>
 
 
-
-        <!-- =================================================
-             PRODUCTS MANAGEMENT
-        ================================================== -->
+        <!-- PRODUCTS -->
 
         <section
             id="adminProducts"
             class="admin-section"
         >
 
-
-            <div class="admin-section-header">
+            <div class="section-title">
 
                 <div>
-
-                    <h3>
-                        محصولات
-                    </h3>
-
-                    <p>
-                        محصولات منو را مدیریت کنید
-                    </p>
-
+                    <h3>مدیریت محصولات</h3>
+                    <p>محصولات منو را اضافه، ویرایش یا حذف کنید.</p>
                 </div>
-
 
                 <button
                     id="addProductButton"
-                    class="primary-admin-button"
+                    class="add-product-button"
                     type="button"
                 >
                     ＋ محصول جدید
@@ -524,18 +305,13 @@
 
             <div
                 id="adminProductList"
-                class="admin-product-list"
-            >
-            </div>
-
+                class="admin-list"
+            ></div>
 
         </section>
 
 
-
-        <!-- =================================================
-             ORDERS MANAGEMENT
-        ================================================== -->
+        <!-- ORDERS -->
 
         <section
             id="adminOrders"
@@ -543,19 +319,11 @@
             hidden
         >
 
-
-            <div class="admin-section-header">
+            <div class="section-title">
 
                 <div>
-
-                    <h3>
-                        سفارش‌ها
-                    </h3>
-
-                    <p>
-                        سفارش‌های مشتریان
-                    </p>
-
+                    <h3>سفارش‌های مشتریان</h3>
+                    <p>سفارش‌های ثبت‌شده در این دستگاه.</p>
                 </div>
 
             </div>
@@ -563,100 +331,63 @@
 
             <div
                 id="adminOrderList"
-                class="admin-order-list"
-            >
-            </div>
-
+                class="admin-list"
+            ></div>
 
         </section>
-
 
     </div>
 
 </div>
 
 
+<!-- ================= PRODUCT FORM ================= -->
 
-<!-- =====================================================
-     PRODUCT MODAL
-===================================================== -->
-
-<div
-    id="productModal"
-    class="modal"
-    hidden
->
+<div id="productModal" class="modal" hidden>
 
     <div
         id="productModalOverlay"
-        class="modal-overlay"
+        class="overlay"
     ></div>
 
-
-    <div class="modal-box">
-
+    <div class="modal-card">
 
         <button
             id="cancelProduct"
-            class="modal-close"
-            type="button"
+            class="close-button"
         >
             ×
         </button>
-
 
         <h2 id="productModalTitle">
             محصول جدید
         </h2>
 
-
         <form id="productForm">
-
-
-            <!-- ID مخفی -->
 
             <input
                 id="editProductId"
                 type="hidden"
             >
 
-
-            <!-- NAME -->
-
-            <label>
-                نام محصول
-            </label>
+            <label>نام محصول</label>
 
             <input
                 id="productName"
-                type="text"
-                placeholder="مثلاً لاته"
                 required
+                placeholder="مثلاً لاته"
             >
 
-
-            <!-- DESCRIPTION -->
-
-            <label>
-                توضیحات
-            </label>
+            <label>توضیحات</label>
 
             <textarea
                 id="productDescription"
-                placeholder="توضیحات محصول..."
+                placeholder="توضیحات محصول"
             ></textarea>
 
+            <label>دسته‌بندی</label>
 
-            <!-- CATEGORY -->
-
-            <label>
-                دسته‌بندی
-            </label>
-
-            <select
-                id="productCategory"
-                required
-            >
+            <select id="productCategory">
 
                 <option value="hot">
                     نوشیدنی گرم
@@ -680,16 +411,12 @@
 
             </select>
 
-
-            <!-- SAVE -->
-
             <button
                 type="submit"
-                class="primary-button"
+                class="main-button"
             >
                 ذخیره محصول
             </button>
-
 
         </form>
 
@@ -698,16 +425,17 @@
 </div>
 
 
+<!-- ADMIN ACCESS -->
 
-<!-- =====================================================
-     SCRIPT
-===================================================== -->
+<button
+    id="adminButton"
+    class="admin-access"
+>
+    ⚙️
+</button>
 
-<script
-    src="script.js"
-></script>
 
+<script src="script.js"></script>
 
 </body>
-
 </html>
